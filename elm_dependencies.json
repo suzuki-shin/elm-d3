@@ -11,11 +11,13 @@
         "D3.Event"
     ],
     "native-modules": [
+        "Native.D3.Cast",
         "Native.D3.Color",
-        "Native.D3.JavaScript",
-        "Native.D3.Selection",
         "Native.D3.Event",
+        "Native.D3.Gensym",
+        "Native.D3.JavaScript",
         "Native.D3.Render",
+        "Native.D3.Selection",
         "Native.D3.Transition"
     ],
     "dependencies": {}
