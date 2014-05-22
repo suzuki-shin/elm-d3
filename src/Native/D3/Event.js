@@ -1,5 +1,4 @@
-import "../cast";
-
+Elm.Native.D3 = Elm.Native.D3 || {};
 Elm.Native.D3.Event = {};
 Elm.Native.D3.Event.make = function(elm) {
   'use strict';
@@ -11,6 +10,7 @@ Elm.Native.D3.Event.make = function(elm) {
   if (elm.Native.D3.Event.values) return elm.Native.D3.Event.values;
 
   var JS = Elm.Native.D3.JavaScript.make(elm);
+  var Cast = Elm.Native.D3.Cast.make(elm);
 
   function mouse_event() {
     return JS.toRecord({
@@ -34,7 +34,7 @@ Elm.Native.D3.Event.make = function(elm) {
 
   function elm_handle_mouse(_event, signal, fn) {
     return function(k, selection, i) {
-      return k(selection.on(_event, safeIndexed(i, function(d, i) {
+      return k(selection.on(_event, Cast.safeIndexed(i, function(d, i) {
         return elm.notify(signal.id, A3(fn, mouse_event(), d, JS.toInt(i)));
       })), i);
     };
@@ -42,7 +42,7 @@ Elm.Native.D3.Event.make = function(elm) {
 
   function elm_handle_keyboard(_event, signal, fn) {
     return function(k, selection, i) {
-      return k(selection.on(_event, safeIndexed(i, function(d, i) {
+      return k(selection.on(_event, Cast.safeIndexed(i, function(d, i) {
         return elm.notify(signal.id, A3(fn, keyboard_event(), d, JS.toInt(i)));
       })), i);
     };
@@ -50,7 +50,7 @@ Elm.Native.D3.Event.make = function(elm) {
 
   function elm_handle_input(signal, fn) {
     return function(k, selection, i) {
-      return k(selection.on('input', safeIndexed(i, function(d, i) {
+      return k(selection.on('input', Cast.safeIndexed(i, function(d, i) {
         var value = d3.select(this).node().value;
         return elm.notify(signal.id, A3(fn, JS.toString(value), d, JS.toInt(i)));
       })), i);
@@ -59,7 +59,7 @@ Elm.Native.D3.Event.make = function(elm) {
 
   function elm_handle_focus(signal, fn) {
     return function(k, selection, i) {
-      return k(selection.on('focus', safeIndexed(i, function(d, i) {
+      return k(selection.on('focus', Cast.safeIndexed(i, function(d, i) {
         return elm.notify(signal.id, A2(fn, d, JS.toInt(i)));
       })), i);
     }
@@ -67,7 +67,7 @@ Elm.Native.D3.Event.make = function(elm) {
 
   function elm_handle_blur(signal, fn) {
     return function(k, selection, i) {
-      return k(selection.on('blur', safeIndexed(i, function(d, i) {
+      return k(selection.on('blur', Cast.safeIndexed(i, function(d, i) {
         return elm.notify(signal.id, A2(fn, d, JS.toInt(i)));
       })), i);
     }

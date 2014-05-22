@@ -1,3 +1,4 @@
+Elm.Native.D3 = Elm.Native.D3 || {};
 Elm.Native.D3.Color = {};
 Elm.Native.D3.Color.make = function(elm) {
   'use strict';
