@@ -21,6 +21,22 @@ module D3.Event
   , focus       -- : BasicHandler e a
   , blur        -- : BasicHandler e a
   ) where
+{-|
+# Event Streams
+@docs stream, folde
+
+# Mouse
+@docs click, dblclick, mousedown, mouseenter, mouseleave, mousemove, mouseout, mouseover, mouseup
+
+# Keyboard
+@docs keyup, keydown, keypress
+
+# Input
+@docs input
+
+# Basics
+@docs focus, blur
+-}
 
 import D3(..)
 import Native.D3.Event
