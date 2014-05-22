@@ -1,5 +1,3 @@
-import "../cast"
-
 /* In Elm's 0.12.3 release, several casting functions were removed from the
  * Native.JavaScript module. To minimize the changes to the rest of the elm-d3
  * code, this module acts as drop-in replacement from the current
@@ -16,6 +14,7 @@ Elm.Native.D3.JavaScript.make = function(elm) {
 
   var JS = Elm.Native.JavaScript.make(elm);
   var List = Elm.Native.List.make(elm);
+  var id = Elm.Native.D3.Cast.make(elm).id;
 
   return elm.Native.D3.JavaScript.values = {
     toBool      : id,

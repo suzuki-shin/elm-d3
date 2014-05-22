@@ -9,6 +9,7 @@ Elm.Native.D3.Render.make = function(elm) {
   if (elm.Native.D3.Render.values) return elm.Native.D3.Render.values;
 
   var newElement = Elm.Graphics.Element.make(elm).newElement;
+  var id = Elm.Native.D3.Cast.make(elm).id;
 
   function run(k) {
     return function(selection) {
