@@ -1,37 +1,36 @@
 module D3
-  ( version                 -- : String
+  ( version             -- : String
 
-  , render                  -- : number -> number -> Selection a -> a -> Element
-  , render'                 -- : (a -> (number, number)) -> Selection a -> a -> Element
-
-  , sequence, chain         -- : Selection a -> Selection a -> Selection a
-  , select, selectAll       -- : String -> Selection a
-  , append                  -- : String -> Selection a
-  , static                  -- : String -> Selection a
-  , remove                  -- : Selection a
-
-  , bind                    -- : Selection a -> (a -> [b]) -> Widget a b
-
-  , enter, update, exit     -- : Selection a
-  , attr, style             -- : String -> (a -> Int -> String) -> Selection a
-  , property                -- : String -> (a -> Int -> Value) -> Selection a
-  , classed                 -- : String -> (a -> Int -> Bool) -> Selection a
-  , html, text              -- : (a -> Int -> String) -> Selection a
-
-  , str     -- : (String -> (a -> Int -> String) -> Selection a) -> String -> String -> Selection a
-  , num     -- : (String -> (a -> Int -> String) -> Selection a) -> String -> number -> Selection a
-  , fun     -- : (String -> (a -> Int -> String) -> Selection a) -> String -> (a -> Int -> String) -> Selection a
-
-  , transition              -- : Selection a
-  , delay                   -- : (a -> Int -> Int) -> Selection a
-  , duration                -- : (a -> Int -> Int) -> Selection a
   , Selection
-  , Widget
-  , (|.)
-  , (<.>)
-  , (|^)
-  , (|-)
-  , (|=)
+
+  , render              -- : number -> number -> Selection a b -> a -> Element
+  , render'             -- : (a -> (number, number)) -> Selection a b -> a -> Element
+
+  , sequence            -- : Selection a b -> Selection a c -> Selection a a
+  , chain, (|.), (<.>)  -- : Selection a b -> Selection b c -> Selection a c
+  , select, selectAll   -- : String -> Selection a a
+  , append              -- : String -> Selection a a
+  , static              -- : String -> Selection a a
+  , remove              -- : Selection a a
+
+  , bind                -- : (a -> [b]) -> Selection a b
+  , (|=)                -- : Selection a b -> (b -> [c]) -> Selection a c
+
+  , nest, (|-)          -- : Selection a b -> Selection b c -> Selection a b
+
+  , enter, update, exit -- : Selection a a
+  , attr, style         -- : String -> (a -> Int -> String) -> Selection a a
+  , property            -- : String -> (a -> Int -> Value) -> Selection a a
+  , classed             -- : String -> (a -> Int -> Bool) -> Selection a a
+  , html, text          -- : (a -> Int -> String) -> Selection a a
+
+  , str     -- : (String -> (a -> Int -> Maybe String) -> Selection a) -> String -> String -> Selection a a
+  , num     -- : (String -> (a -> Int -> Maybe String) -> Selection a) -> String -> number -> Selection a a
+  , fun     -- : (String -> (a -> Int -> Maybe String) -> Selection a) -> String -> (a -> Int -> String) -> Selection a a
+
+  , transition          -- : Selection a a
+  , delay               -- : (a -> Int -> Int) -> Selection a a
+  , duration            -- : (a -> Int -> Int) -> Selection a a
   ) where
 
 import Json(..)
