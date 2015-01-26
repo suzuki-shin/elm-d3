@@ -2,14 +2,16 @@ module Boxes where
 
 import D3(..)
 import Mouse
+import Signal
+import Graphics.Element (..)
 
 size   = 300
 margin = { top = 10, left = 10, right = 10, bottom = 10 }
 dims   = { height = size - margin.top - margin.bottom
          , width  = size - margin.left - margin.right }
 
-type Dimensions = { height : Float, width : Float }
-type Margins = { top : Float, left : Float, right : Float, bottom : Float }
+type alias Dimensions = { height : Float, width : Float }
+type alias Margins = { top : Float, left : Float, right : Float, bottom : Float }
 
 svg : Dimensions -> Margins -> Selection a
 svg ds ms =
@@ -29,17 +31,17 @@ boxes =
         |. num attr "height" 100
         |. fun attr "fill"   (\(_, _, c) _ -> c)
      |- update
-        |. fun attr "x" (\(x, _, _) _ -> show x)
-        |. fun attr "y" (\(_, y, _) _ -> show y)
+        |. fun attr "x" (\(x, _, _) _ -> toString x)
+        |. fun attr "y" (\(_, y, _) _ -> toString y)
      |- exit
         |. remove
 
 translate : number -> number -> String
-translate x y = "translate(" ++ (show x) ++ "," ++ (show y) ++ ")"
+translate x y = "translate(" ++ (toString x) ++ "," ++ (toString y) ++ ")"
 
 vis dims margin =
   svg dims margin
   |. embed boxes
 
 main : Signal Element
-main = render dims.height dims.width (vis dims margin) <~ Mouse.position
+main = Signal.map (render dims.height dims.width (vis dims margin)) Mouse.position

@@ -12,7 +12,7 @@ Elm.Native.D3.JavaScript.make = function(elm) {
   elm.Native.D3.JavaScript = elm.Native.D3.JavaScript || {};
   if (elm.Native.D3.JavaScript.values) return elm.Native.D3.JavaScript.values;
 
-  var JS = Elm.Native.JavaScript.make(elm);
+  // var JS = Elm.Native.JavaScript.make(elm);
   var List = Elm.Native.List.make(elm);
   var id = Elm.Native.D3.Cast.make(elm).id;
 
@@ -21,13 +21,13 @@ Elm.Native.D3.JavaScript.make = function(elm) {
     toFloat     : function (x) { return +x; },
     toInt       : function (x) { return x|0; },
     toList      : List.fromArray,
-    toRecord    : JS.toRecord,
+    toRecord    : id,
     toString    : id,
     fromBool    : id,
     fromFloat   : id,
     fromInt     : id,
     fromList    : List.toArray,
-    fromRecord  : JS.fromRecord,
+    fromRecord  : id,
     fromString  : id
   };
 };

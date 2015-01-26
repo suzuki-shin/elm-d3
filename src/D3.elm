@@ -10,13 +10,13 @@ module D3
   , static                  -- : String -> Selection a
   , remove                  -- : Selection a
 
-  , bind                    -- : Selection a -> (a -> [b]) -> Widget a b
+  , bind                    -- : Selection a -> (a -> List b) -> Widget a b
   , chain'                  -- : Widget a b -> Selection b -> Widget a b
   , embed                   -- : Widget a b -> Selection a
 
   , enter, update, exit     -- : Selection a
   , attr, style             -- : String -> (a -> Int -> String) -> Selection a
-  , property                -- : String -> (a -> Int -> Value) -> Selection a
+  --, property                -- : String -> (a -> Int -> Value) -> Selection a
   , classed                 -- : String -> (a -> Int -> Bool) -> Selection a
   , html, text              -- : (a -> Int -> String) -> Selection a
 
@@ -56,15 +56,20 @@ module D3
 -}
 
 
-import Json(..)
 import String
+import List (..)
+import Json.Decode as Json
 
 import Native.D3.Render
 import Native.D3.Selection
 import Native.D3.Transition
+import Native.D3.Cast
+import Native.D3.Gensym
+import Native.D3.Javascript
+import Graphics.Element (Element)
 
-data Selection a = Selection
-data Widget a b = Widget
+type Selection a = Selection
+type Widget a b = Widget
 
 version : String
 version = Native.D3.Selection.version
@@ -188,22 +193,22 @@ is equivalent to
 remove : Selection a
 remove = Native.D3.Selection.remove
 
-{-| Bind data to the given selection, creating a widget that will nest the
-result under a provided parent.
-
-      bind s f
-
-is equlvalent to
-
-      function(p) { return p.s().bind(f); }
--}
-bind : Selection a -> (a -> [b]) -> Widget a b
+-- Bind data to the given selection, creating a widget that will nest the
+-- result under a provided parent.
+--
+--   bind s f
+--
+-- is equlvalent to
+--
+--   function(p) { return p.s().bind(f); }
+--
+bind : Selection a -> (a -> List b) -> Widget a b
 bind s f = Native.D3.Selection.bind s f
 
 -- Infix operator alias for bind.
 --
 infixl 6 |=
-(|=) : Selection a -> (a -> [b]) -> Widget a b
+(|=) : Selection a -> (a -> List b) -> Widget a b
 (|=) = bind
 
 {-| Chain is the Widget-analogue of chain on Selections. It will chain Selection
@@ -308,8 +313,8 @@ is equivalent to
 
       context = context.property(name, fn);
 -}
-property : String -> (a -> Int -> Value) -> Selection a
-property = Native.D3.Selection.property
+--property : String -> (a -> Int -> Value) -> Selection a
+--property = Native.D3.Selection.property
 
 {-| Include or exclude the class on each element depending on the result of `fn`.
 
@@ -356,7 +361,7 @@ num : (String -> (a -> Int -> String) -> Selection a)
     -> String
     -> number
     -> Selection a
-num a name v = a name (\_ _ -> (show v))
+num a name v = a name (\_ _ -> (toString v))
 
 {-| String casting helper for attr and similar functions.
 
