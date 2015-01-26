@@ -7,37 +7,26 @@ basis for the library, as well as an alternative renderer for Elm.
 [elm]: http://elm-lang.org
 [d3]: http://d3js.org
 
-## Installation
+## Get Set Up
 
-First make sure that you have [node.js][node] installed, as well as the
-[Elm][elm] compiler. Once you've installed those dependencies, clone the elm-d3
-repository and run the following commands from the root directory:
+After installing [the Elm Platform][elm], start a new directory for your project and
+run the following command:
 
-    npm install smash
-    make
+    elm-get install seliopou/elm-d3
 
-This will locally install the [smash][] utility and build three files in the
-root directory of the elm-d3 repository. They'll come in handy later.
+[elm]: https://github.com/elm-lang/elm-platform/blob/master/README.md
 
-[node]: http://nodejs.org/
-[elm]: https://github.com/evancz/elm
-[smash]: https://github.com/mbostock/smash
-
-* `elm-d3.library.js`: contains all compiled code;
-* `elm-d3.runtime.js`: contains supporting, non-compiled JavaScript code;
-  and
-* `elm-d3.js`: the previous two files, concatenated.
+Be sure to say yes to creating an `elm_dependencies.json` file and add elm-d3
+as a dependency. This tells the compiler how to build D3 modules.
 
 To get an example compiled and running in your browser, use the following
 commands:
 
-    elm --make --src-dir=src `./scripts/build-flags` examples/Circles.elm
-    open build/examples/Circles.html
+    elm --make --script=http://d3js.org/d3.v3.min.js --src-dir=examples examples/Circles.elm
 
-If you're not using OS X, the last command won't work. In that case open
-`build/examples/Circles.html` however you normally would in your operating
-system. Once the page is open, move your mouse left and right to add and remove
-circles, and move your mouse up and down to change their brightness.
+Open `build/examples/Circles.html` in your browser. Move your mouse left and
+right to add and remove circles, and move your mouse up and down to change
+their brightness.
 
 ## Usage
 

@@ -1,6 +1,4 @@
-import "../cast"
-import "../gensym"
-
+Elm.Native.D3 = Elm.Native.D3 || {};
 Elm.Native.D3.Selection = {};
 Elm.Native.D3.Selection.make = function(elm) {
   'use strict';
@@ -51,6 +49,8 @@ Elm.Native.D3.Selection.make = function(elm) {
 
   var JS = Elm.Native.D3.JavaScript.make(elm);
   var Json = Elm.Native.Json.make(elm);
+  var Cast = Elm.Native.D3.Cast.make(elm);
+  var Gensym = Elm.Native.D3.Gensym.make(elm);
 
   function safeJson(fn) {
     return function(a, i) {
@@ -79,8 +79,8 @@ Elm.Native.D3.Selection.make = function(elm) {
 
   function elm_sequence(s1, s2) {
     return function(k, selection, i) {
-      s1(id, selection, i);
-      s2(id, selection, i);
+      s1(Cast.id, selection, i);
+      s2(Cast.id, selection, i);
       return k(selection, i);
     };
   }
@@ -128,7 +128,7 @@ Elm.Native.D3.Selection.make = function(elm) {
   function elm_chain_widget(w, s) {
     return function(k, selection, i) {
       return w(function(_selection, j) {
-        s(id, _selection, j);
+        s(Cast.id, _selection, j);
         return k(_selection, j);
       }, selection, i);
     };
@@ -136,7 +136,7 @@ Elm.Native.D3.Selection.make = function(elm) {
 
   function elm_embed(w) {
     return function(k, selection, i) {
-      w(id, selection, i);
+      w(Cast.id, selection, i);
       return k(selection, i);
     }
   }
@@ -161,10 +161,10 @@ Elm.Native.D3.Selection.make = function(elm) {
    * context. */
   function elm_static(element) {
     var element = JS.fromString(element),
-        static_class = gensym('static');
+        static_class = Gensym.gensym('static');
 
     return function(k, selection, i) {
-      return selection.each(safeIndexed(i, function(d, i) {
+      return selection.each(Cast.safeIndexed(i, function(d, i) {
         var s = d3.select(this),
             static_ = s.select('.' + static_class);
 
@@ -179,47 +179,47 @@ Elm.Native.D3.Selection.make = function(elm) {
 
   function elm_classed(name, valfn) {
     name = JS.fromString(name);
-    valfn = safeValfn(valfn, safePredicate);
+    valfn = Cast.safeValfn(valfn, safePredicate);
     return function(k, selection, i) {
-      return k(selection.classed(name, safeIndexed(i, valfn)), i);
+      return k(selection.classed(name, Cast.safeIndexed(i, valfn)), i);
     };
   }
 
   function elm_attr(name, valfn) {
     name = JS.fromString(name);
-    valfn = safeValfn(valfn, safeEvaluator);
+    valfn = Cast.safeValfn(valfn, safeEvaluator);
     return function(k, selection, i) {
-      return k(selection.attr(name, safeIndexed(i, valfn)), i);
+      return k(selection.attr(name, Cast.safeIndexed(i, valfn)), i);
     };
   }
 
   function elm_style(name, valfn) {
     name = JS.fromString(name);
-    valfn = safeValfn(valfn, safeEvaluator);
+    valfn = Cast.safeValfn(valfn, safeEvaluator);
     return function(k, selection, i) {
-      return k(selection.style(name, safeIndexed(i, valfn)), i);
+      return k(selection.style(name, Cast.safeIndexed(i, valfn)), i);
     };
   }
 
   function elm_property(name, valfn) {
     name = JS.fromString(name);
-    valfn = safeValfn(valfn, safeJson);
+    valfn = Cast.safeValfn(valfn, safeJson);
     return function(k, selection, i) {
-      return k(selection.property(name, safeIndexed(i, valfn)), i);
+      return k(selection.property(name, Cast.safeIndexed(i, valfn)), i);
     };
   }
 
   function elm_html(valfn) {
-    valfn = safeValfn(valfn, safeEvaluator);
+    valfn = Cast.safeValfn(valfn, safeEvaluator);
     return function(k, selection, i) {
-      return k(selection.html(safeIndexed(i, valfn)), i);
+      return k(selection.html(Cast.safeIndexed(i, valfn)), i);
     };
   }
 
   function elm_text(valfn) {
-    valfn = safeValfn(valfn, safeEvaluator);
+    valfn = Cast.safeValfn(valfn, safeEvaluator);
     return function(k, selection, i) {
-      return k(selection.text(safeIndexed(i, valfn)), i);
+      return k(selection.text(Cast.safeIndexed(i, valfn)), i);
     };
   }
 

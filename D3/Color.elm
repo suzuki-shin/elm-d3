@@ -12,6 +12,18 @@ module D3.Color
   , fromString  -- : String -> Color
   , toString    -- : Color -> String
   ) where
+{-| Create and update colors. Lets you work with colors as RGB, HSL, HCL, LAB,
+and strings.
+
+@docs brighter, darker
+
+# Create
+@docs fromRGB, fromHSL, fromHCL, fromLAB, fromString
+
+# Extract
+@docs toRGB, toHSL, toHCL, toLAB, toString
+-}
+
 
 import Native.D3.Color
 
