@@ -50,6 +50,9 @@ dims   = { height = height - margin.top - margin.bottom
 -- height of the <svg> element.
 --
 
+floatList : Generator (List Float)
+floatList = list 10 (float 0 1)
+
 svg : Dimensions -> Margins -> D3 a a
 svg ds ms =
   static "svg"

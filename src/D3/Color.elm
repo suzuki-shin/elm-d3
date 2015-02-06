@@ -27,7 +27,7 @@ and strings.
 
 import Native.D3.Color
 
-data Color = Color
+type Color = Color
 
 
 fromRGB : Int -> Int -> Int -> Color

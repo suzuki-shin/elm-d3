@@ -22,6 +22,7 @@ module D3.Event
   , blur        -- : BasicHandler e a
   , Stream
   ) where
+
 {-|
 # Event Streams
 @docs stream, folde
@@ -41,15 +42,16 @@ module D3.Event
 
 import D3(..)
 import Native.D3.Event
+import Native.D3.Color
 import Signal
 import String
 
 
-data Event e
+type Event e
   = Start
   | Event e
 
-type Stream e = Signal (Event e)
+type alias Stream e = Signal (Event e)
 
 stream : () -> Stream e
 stream () = Signal.constant Start
@@ -61,13 +63,13 @@ folde f m =
       -- N.B. the start event will reset the accumulator to the initial value.
       Start -> m
       Event e -> f e n
-    in foldp g m
+    in Signal.foldp g m
 
 
 -- Mouse event datatypes and handlers
 --
 
-type MouseEvent = {
+type alias MouseEvent = {
   altKey : Bool,
   button : Int,
   ctrlKey : Bool,
@@ -75,7 +77,7 @@ type MouseEvent = {
   shiftKey : Bool
 }
 
-type MouseHandler e a = Stream e -> (MouseEvent -> a -> Int -> e) -> D3 a a
+type alias MouseHandler e a = Stream e -> (MouseEvent -> a -> Int -> e) -> D3 a a
 
 handleMouse : String -> MouseHandler e a
 handleMouse e s f = Native.D3.Event.handleMouse e s (\m a i -> Event (f m a i))
@@ -110,7 +112,7 @@ mouseup = handleMouse "mouseup"
 -- Keyboard event datatypes and handlers
 --
 
-type KeyboardEvent = {
+type alias KeyboardEvent = {
   altKey : Bool,
   keyCode : Int,
   ctrlKey : Bool,
@@ -118,7 +120,7 @@ type KeyboardEvent = {
   shiftKey : Bool
 }
 
-type KeyboardHandler e a = Stream e -> (KeyboardEvent -> a -> Int -> e) -> D3 a a
+type alias KeyboardHandler e a = Stream e -> (KeyboardEvent -> a -> Int -> e) -> D3 a a
 
 handleKeyboard : String -> KeyboardHandler e a
 handleKeyboard e s f = Native.D3.Event.handleKeyboard e s (\m a i -> Event (f m a i))
@@ -138,7 +140,7 @@ keypress = handleKeyboard "keypress"
 
 type InputEvent = String
 
-type InputHandler e a = Stream e -> (InputEvent -> a -> Int -> e) -> D3 a a
+type alias InputHandler e a = Stream e -> (InputEvent -> a -> Int -> e) -> D3 a a
 
 input : InputHandler e a
 input s f = Native.D3.Event.handleInput s (\m a i -> Event (f m a i ))
@@ -146,7 +148,7 @@ input s f = Native.D3.Event.handleInput s (\m a i -> Event (f m a i ))
 -- Focus/Blur handlers
 --
 
-type BasicHandler e a = Stream e -> (a -> Int -> e) -> D3 a a
+type alias BasicHandler e a = Stream e -> (a -> Int -> e) -> D3 a a
 
 focus : BasicHandler e a
 focus s f = Native.D3.Event.handleFocus s (\a i -> Event (f a i))

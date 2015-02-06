@@ -38,6 +38,9 @@ import String
 import Json.Decode(..)
 import List
 
+import Native.D3.Javascript
+import Native.D3.Cast
+import Native.D3.Gensym
 import Native.D3.Render
 import Native.D3.Selection
 import Native.D3.Transition

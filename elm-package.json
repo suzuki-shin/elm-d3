@@ -7,7 +7,11 @@
         "src"
     ],
     "exposed-modules": [
-        "D3"
+        "D3",
+        "D3.Event",
+        "D3.Color",
+        "D3.Scale",
+        "D3.Voronoi"
     ],
     "native-modules": true,
     "dependencies": {
