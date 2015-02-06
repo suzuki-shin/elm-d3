@@ -1,6 +1,3 @@
-import "../cast"
-import "../gensym"
-
 Elm.Native.D3.Selection = {};
 Elm.Native.D3.Selection.make = function(elm) {
   'use strict';
@@ -51,6 +48,11 @@ Elm.Native.D3.Selection.make = function(elm) {
 
   var JS = Elm.Native.D3.JavaScript.make(elm);
   var Json = Elm.Native.Json.make(elm);
+  var Cast = Elm.Native.D3.Cast.make(elm),
+      safeValfn = Cast.safeValfn,
+      id = Cast.id,
+      safeIndexed = Cast.safeIndexed;
+  var gensym = Elm.Native.D3.Gensym.make(elm).gensym;
 
   function safeJson(fn) {
     return function(a, i) {
