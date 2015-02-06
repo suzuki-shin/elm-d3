@@ -1,16 +1,19 @@
 module Clicks where
 
 import String
+import Signal(..)
+import Graphics.Element (..)
+
 
 import D3(..)
 import D3.Event
 
-data Pos
+type Pos
   = Left
   | Middle
   | Right
 
-type Model = { left : Int, middle : Int, right : Int }
+type alias Model = { left : Int, middle : Int, right : Int }
 
 events : D3.Event.Stream Pos
 events = D3.Event.stream ()
@@ -23,7 +26,7 @@ view =
         |. str attr "class" "box"
         |. D3.Event.click events (\e (p, _) _ -> p)
      |- update
-        |. text (\(_, n) _ -> show n)
+        |. text (\(_, n) _ -> toString n)
      |- exit
         |. remove
 

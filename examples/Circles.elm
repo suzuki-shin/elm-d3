@@ -1,16 +1,20 @@
 module Circles where
 
 import D3(..)
-import D3.Color 
+import D3.Color
 import Mouse
+import Signal(..)
+import Graphics.Element (..)
+import List(repeat)
+
 
 size   = 375
 margin = { top = 25, left = 25, right = 25, bottom = 25 }
 dims   = { height = size - margin.top - margin.bottom
          , width  = size - margin.left - margin.right }
 
-type Dimensions = { height : Int, width : Int }
-type Margins = { top : Int, left : Int, right : Int, bottom : Int }
+type alias Dimensions = { height : Int, width : Int }
+type alias Margins = { top : Int, left : Int, right : Int, bottom : Int }
 
 svg : Dimensions -> Margins -> D3 a a
 svg ds ms =
@@ -30,7 +34,7 @@ circles =
         |. fun attr "fill" color
         |. num attr "r"    0
         |. num attr "cy"   150
-        |. fun attr "cx"   (\_ i -> show (25 + 50 * i))
+        |. fun attr "cx"   (\_ i -> toString (25 + 50 * i))
         |. transition
            |. num attr "r" 25
      |- update
@@ -45,7 +49,7 @@ color y i =
     in D3.Color.toString (D3.Color.darker magnitude steelBlue)
 
 translate : number -> number -> String
-translate x y = "translate(" ++ (show x) ++ "," ++ (show y) ++ ")"
+translate x y = "translate(" ++ (toString x) ++ "," ++ (toString y) ++ ")"
 
 vis dims margin =
   svg dims margin

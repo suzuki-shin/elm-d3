@@ -1,6 +1,3 @@
-import "../cast"
-import "../gensym"
-
 Elm.Native.D3.Selection = {};
 Elm.Native.D3.Selection.make = function(elm) {
   'use strict';
