@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "summary": "helpful summary of your project, less than 80 characters",
+    "summary": "elm wrapper for d3",
     "repository": "https://github.com/seliopou/elm-d3.git",
     "license": "BSD3",
     "source-directories": [
