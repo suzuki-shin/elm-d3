@@ -29,7 +29,6 @@ import Mouse
 import Random(..)
 import List
 import String(join)
-import Signal(..)
 import Signal
 import Graphics.Element (..)
 
@@ -86,7 +85,7 @@ cells = D3.Voronoi.cellsWithClipping margin.right margin.top dims.width dims.hei
 path : List D3.Voronoi.Point -> String
 path ps =
   let pair p = (toString p.x) ++ "," ++ (toString p.y)
-    in "M" ++ (join "L" (map pair ps)) ++ "Z"
+    in "M" ++ (join "L" (Signal.map pair ps)) ++ "Z"
 
 -- Helper function for creating an SVG transformation string that represents a
 -- translation.
@@ -108,11 +107,11 @@ floatList n s =
 randomPoints : Int -> Signal (List D3.Voronoi.Point)
 randomPoints n =
   let mk_point x y = { x = x * dims.width , y = y * dims.height } in
-    constant (List.map2 mk_point (floatList 100 3145) (floatList 100 4346))
+    Signal.constant (List.map2 mk_point (floatList 100 3145) (floatList 100 4346))
 
 
 main : Signal Element
 main =
    let mouse (x, y) = { x = (toFloat x) - margin.left, y = (toFloat y) - margin.top }
-       points = (\m p -> mouse m :: p) <~ Mouse.position ~ (randomPoints 100)
-    in render dims.width dims.height (vis dims margin) <~ points
+       points = Signal.map2 (\m p -> mouse m :: p) Mouse.position (randomPoints 100)
+    in render dims.width dims.height Signal.map (vis dims margin) points

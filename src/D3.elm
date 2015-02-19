@@ -5,7 +5,6 @@ module D3
 
   , render              -- : number -> number -> D3 a b -> a -> Element
   , render'             -- : (a -> (number, number)) -> D3 a b -> a -> Element
-
   , sequence            -- : D3 a b -> D3 a c -> D3 a a
   , chain, (|.), (<.>)  -- : D3 a b -> D3 b c -> D3 a c
   , select, selectAll   -- : String -> D3 a a
