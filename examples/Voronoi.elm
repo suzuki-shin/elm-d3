@@ -28,8 +28,8 @@ import D3.Voronoi
 import Mouse
 import Random(..)
 import List
-import String(join)
-import Signal
+import String
+import Signal(..)
 import Graphics.Element (..)
 
 -- Type declaractions for records that represent dimensions and margins.
@@ -42,7 +42,8 @@ width = 960
 height = 500
 
 margin = { top = 0, left = 0, right = 0, bottom = 0 }
-dims   = { height = height - margin.top - margin.bottom, width  = width - margin.left - margin.right }
+dims   = { height = height - margin.top - margin.bottom
+         , width  = width - margin.left - margin.right }
 
 -- A function that will create an <svg> element with a nested <g> element. The
 -- function will use the given dimensions and margins the set the width and
@@ -77,15 +78,15 @@ voronoi =
         |. fun attr "d" (\ps _ -> path ps)
         |. fun attr "class" (\_ i -> "q" ++ (toString ((%) i 9)) ++ "-9")
 
-cells : List D3.Voronoi.Point -> (List (List D3.Voronoi.Point))
+cells : (List D3.Voronoi.Point) -> List List D3.Voronoi.Point
 cells = D3.Voronoi.cellsWithClipping margin.right margin.top dims.width dims.height
 
 -- Helper function for creating an SVG path string for the given polygon.
 --
-path : List D3.Voronoi.Point -> String
+path : (List D3.Voronoi.Point) -> String
 path ps =
   let pair p = (toString p.x) ++ "," ++ (toString p.y)
-    in "M" ++ (join "L" (Signal.map pair ps)) ++ "Z"
+    in "M" ++ (String.join "L" (List.map pair ps)) ++ "Z"
 
 -- Helper function for creating an SVG transformation string that represents a
 -- translation.
@@ -93,25 +94,27 @@ path ps =
 translate : number -> number -> String
 translate x y = "translate(" ++ (toString x) ++ "," ++ (toString y) ++ ")"
 
-vis dims margin =
-  svg dims margin
-  |- voronoi
-  |- circles
-
 floatList : Int -> Int -> List Float
 floatList n s =
   let getV (a, _) = a
       seed0 = initialSeed s
     in getV (generate (list n (float 0 1)) seed0)
 
+-- Generates a list of random points of the given length. The list is returned
+-- as a Signal, thought the signal will never take on any other value.
+--
 randomPoints : Int -> Signal (List D3.Voronoi.Point)
 randomPoints n =
   let mk_point x y = { x = x * dims.width , y = y * dims.height } in
-    Signal.constant (List.map2 mk_point (floatList 100 3145) (floatList 100 4346))
+    constant (List.map2 mk_point (floatList 100 3145) (floatList 100 4346))
 
+vis dims margin =
+  svg dims margin
+  |- voronoi
+  |- circles
 
 main : Signal Element
 main =
-   let mouse (x, y) = { x = (toFloat x) - margin.left, y = (toFloat y) - margin.top }
-       points = Signal.map2 (\m p -> mouse m :: p) Mouse.position (randomPoints 100)
-    in render dims.width dims.height Signal.map (vis dims margin) points
+  let mouse (x, y) = { x = (toFloat x) - margin.left, y = (toFloat y) - margin.top }
+      points = (\m ps -> mouse m :: ps) <~ Mouse.position ~ (randomPoints 100)
+    in render dims.width dims.height (vis dims margin) <~ points

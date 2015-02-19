@@ -19,11 +19,14 @@ import List
 
 import D3(..)
 import D3.Event(..)
+import Signal(..)
+import Graphics.Element (..)
+
 
 -------------------------------------------------------------------------------
 -- The Model
 
-type Model = {
+type alias Model = {
   dict : Dict.Dict Int Int,
   next : Int
 }
@@ -48,7 +51,7 @@ decrement i d =
 -------------------------------------------------------------------------------
 -- The Events
 
-data Event
+type Event
   = Create
   | Increment Int
   | Decrement Int
@@ -90,7 +93,7 @@ counters =
         |- (append "div" <.> str attr "class" "box remove"
            |. html (\_ _ -> "&#10007;")))
      |- update <.> select "div.display"
-        |. text (\(_, d) _ -> show d)
+        |. text (\(_, d) _ -> toString d)
      |- update <.> select "div.increment"
         |. click events (\_ (n, _) _ -> Increment n)
      |- update <.> select "div.decrement"
